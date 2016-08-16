@@ -55,9 +55,9 @@ string VM::getOut(void)
     return out;
 }
 
-void VM::execute(void)
+int VM::execute(void)
 {
-    return;
+    return 0;
 }
 
 

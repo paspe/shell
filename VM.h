@@ -32,7 +32,7 @@ class VM {
         string getIn();
         string getOut();
 
-        void execute();
+        int execute();
 
 };
 
