@@ -54,7 +54,7 @@ int parseLine(string line){
 		token->consumeNextToken();
 
 		// Arguments
-		while (token->currentToken().compare("<") != 0 && token->currentToken().compare(">") != 0 && token->currentToken().compare("|") != 0 && token->hasMoreTokens()){
+		while (token->currentToken().compare("<") != 0 && token->currentToken().compare(">") != 0 && token->currentToken().compare("|") != 0 && token->currentToken().compare("EOF") != 0){//token->hasMoreTokens()){
 			string tempArgs[numArgs+1];
 			copy(args, args+numArgs, tempArgs);
 			numArgs++;

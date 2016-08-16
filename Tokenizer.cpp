@@ -24,6 +24,11 @@ void Tokenizer::setLine(string s){
 void Tokenizer::consumeNextToken(){
     string token = "";
     int len = line.size();
+    if(pos >= len){
+        current_token = "EOF";
+        return;
+    }
+
     while(line[pos] != ' ' && pos < len){
         token += line[pos++];
     }
