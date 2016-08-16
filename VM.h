@@ -24,6 +24,7 @@ class VM {
         vector<string> *args;
         string in;
         string out;
+        int fork_proc();
     public:
         //setters
         void setCmd(string);

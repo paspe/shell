@@ -2,9 +2,9 @@
 // Created by Dillon
 //
 
+#include <cstring>
 #include "VM.h"
-#include <iostream>
-#include <string>
+
 using namespace std;
 
 
@@ -57,20 +57,33 @@ string VM::getOut(void)
 
 int VM::execute(void)
 {
-    if(this->cmd.compare("exit")){
-        return EXIT;
-    }
-    else if(this->cmd.compare("cd")){
-
-    }
-    else if(this->cmd.compare("ls")){
-
-    }
-    else{
-        return ERROR;
-    }
+    return fork_proc();
+//    if(this->cmd.compare("cd") == 0){
+//
+//    }
+//    else if(this->cmd.compare("ls") == 0){
+//
+//    }
+//    else{
+//        return fork_proc();
+//    }
     return NO_ERROR;
 }
 
 
+int VM::fork_proc(){
+    pid_t newPid;
+    char **args;
+    newPid = fork();
 
+    if(newPid < 0){
+        cout << "Error spawning process." << endl;
+        return -1;
+    }
+
+    this->args->push_back(NULL);
+
+    execvp(&this->cmd[0], args);
+
+    return 0;
+}
