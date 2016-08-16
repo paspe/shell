@@ -57,7 +57,19 @@ string VM::getOut(void)
 
 int VM::execute(void)
 {
-    return 0;
+    if(this->cmd.compare("exit")){
+        return EXIT;
+    }
+    else if(this->cmd.compare("cd")){
+
+    }
+    else if(this->cmd.compare("ls")){
+
+    }
+    else{
+        return ERROR;
+    }
+    return NO_ERROR;
 }
 
 

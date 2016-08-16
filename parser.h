@@ -17,7 +17,7 @@
 
 using namespace std;
 
-void parseLine(string);
+int parseLine(string);
 
 string current();
 

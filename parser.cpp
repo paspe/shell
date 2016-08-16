@@ -27,7 +27,7 @@ void consume(){
 // The function loops through parsing the line into is commands to generate VMs. The VMs are
 // executed after a complete VM is created.  After the VM has completed execution, it then
 // parses the rest of the commands.
-void parseLine(string line){
+int parseLine(string line){
 
 	Tokenizer* token = new Tokenizer();
 	token->setLine(line);
@@ -88,6 +88,9 @@ void parseLine(string line){
 			output = "screen";
 		}
 
+        if(cmd.compare("exit") ==0){
+            return -1;
+        }
 		// Execute VM here
 		cout << cmd << "\t ";
 		for(int i = 0; i < numArgs; i++){
@@ -97,7 +100,7 @@ void parseLine(string line){
 		numArgs = 0;
 	}
 	delete token;
-	return;
+	return 0;
 }
 
 

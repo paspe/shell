@@ -6,12 +6,12 @@
 
 using namespace std;
 
-int main() {
-	parseLine("ls -a < file | stuff | more stuff > out");
-	return 0;
-}
+//int main() {
+//	parseLine("ls -a < file | stuff | more stuff > out");
+//	return 0;
+//}
 
-/*
+
 string getDir();
 
 int main() {
@@ -23,7 +23,7 @@ int main() {
 
         cout << getDir() << " :: ";
         getline(cin, userInput);
-        if(parser(userInput) == -1){
+        if(parseLine(userInput) == -1){
             break;
         }
     }
@@ -45,4 +45,4 @@ string getDir(){
 
     return cCurrentPath;
 }
-*/
+
