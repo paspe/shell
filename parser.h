@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "Tokenizer.h"
+#include "VM.h"
 
 using namespace std;
 

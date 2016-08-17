@@ -38,6 +38,8 @@ int parseLine(string line){
 	string* args = NULL;
 	string input;
 	string output;
+	VM* vm = new VM();
+
 	while (token->hasMoreTokens()) {
 
 		// Case that the previous command was pipe
@@ -92,13 +94,23 @@ int parseLine(string line){
             return -1;
         }
 		// Execute VM here
+
+
+		vm->setCmd(cmd);
+		vm->setIn(input);
+		vm->setOut(output);
 		cout << cmd << "\t ";
 		for(int i = 0; i < numArgs; i++){
 			cout << args[i] << ' ';
+			vm->setArgs(args[i]);
 		}
 		cout << "\t " << input << "\t " << output << "\n";
+		vm->execute();
+
 		numArgs = 0;
+
 	}
+	delete vm;
 	delete token;
 	return 0;
 }

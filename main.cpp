@@ -1,5 +1,6 @@
 #include <iostream>
 #include "parser.h"
+#include "VM.h"
 
 #define GetCurrentDir getcwd
 #define MAXBUFFER 256
@@ -7,7 +8,12 @@
 using namespace std;
 
 //int main() {
-//	parseLine("ls -a < file | stuff | more stuff > out");
+////	parseLine("ls -a < file | stuff | more stuff > out");
+//    VM* tmp = new VM;
+//    tmp->setCmd("top");// "/home/halek/ClionProjects/shell/a.out");
+////    tmp->setArgs("-l");
+//    tmp->execute();
+//
 //	return 0;
 //}
 
