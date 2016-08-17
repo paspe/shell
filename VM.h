@@ -20,12 +20,14 @@ class VM {
 
     private:
         string cmd;
-        // FIX?
-        vector<string> *args;
+        vector<string> args;
         string in;
         string out;
         int fork_proc();
+        string vtos(vector<string>);
     public:
+        VM();
+
         //setters
         void setCmd(string);
         void setArgs(string);
@@ -34,7 +36,7 @@ class VM {
 
         //getters
         string getCmd();
-        vector<string>* getArgs();
+        vector<string> getArgs();
         string getIn();
         string getOut();
 
