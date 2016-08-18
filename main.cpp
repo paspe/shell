@@ -23,7 +23,8 @@ string getDir();
 int main() {
     string userInput;
 
-    cout << "Entering the GMP Shell..." << endl << endl;
+    cout << "Entering the GMP Shell..." << endl;
+    cout << "Enter '?' for help" << endl << endl;
 
     while(1) {
 

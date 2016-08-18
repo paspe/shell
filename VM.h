@@ -25,6 +25,7 @@ class VM {
         string out;
         int fork_proc();
         string vtos(vector<string>);
+        void show_help();
     public:
         VM();
 

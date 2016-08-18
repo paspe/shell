@@ -38,6 +38,7 @@ int parseLine(string line){
 	string* args = NULL;
 	string input;
 	string output;
+
 	VM* vm = new VM();
 
 	while (token->hasMoreTokens()) {

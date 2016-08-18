@@ -75,10 +75,13 @@ int VM::execute(void)
 {
 //    return fork_proc();
     if(this->cmd.compare("cd") == 0){
-
+        chdir(this->getArgs()[0].c_str());
     }
     else if(this->cmd.compare("ls") == 0){
 
+    }
+    else if(this->cmd.compare("?") == 0){
+        show_help();
     }
     else{
         return fork_proc();
@@ -101,6 +104,7 @@ int VM::fork_proc(){
 
         args = vtos(this->args);
 //        cout << newPid << " " << this->getCmd() << " " << args << endl;
+
         execlp("gnome-terminal", "gnome-terminal", "-x", "sh", "-c",  &this->cmd[0], args, "--noconsole", NULL);
 
     }
@@ -109,9 +113,20 @@ int VM::fork_proc(){
 
 
 string VM::vtos(vector<string> s){
-    string args;
+    string args = "";
 
+    int i;
 
+    for(i=0; i<s.size();i++){
+        args = args + s[i];
+    }
 
     return args;
+}
+
+
+void VM::show_help(){
+    cout << "cd\t\tChange Directory." << endl;
+    cout << "ls\t\tList contents of current Directory." << endl;
+    cout << "any\t\tWill try to find an executable with that name and run it in a new window." << endl << endl;
 }
