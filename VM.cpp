@@ -103,9 +103,8 @@ int VM::fork_proc(){
     if (newPid == 0){
 
         args = vtos(this->args);
-//        cout << newPid << " " << this->getCmd() << " " << args << endl;
-
-        execlp("gnome-terminal", "gnome-terminal", "-x", "sh", "-c",  &this->cmd[0], args, "--noconsole", NULL);
+        execlp("gnome-terminal", "gnome-terminal", "-x",  &this->cmd[0], args, NULL);
+//        execlp(&this->cmd[0],  &this->cmd[0], args, NULL);
 
     }
     return 0;
