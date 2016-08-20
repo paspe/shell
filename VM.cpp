@@ -153,10 +153,10 @@ int VM::fork_proc(){
         this->args.insert(this->args.begin(), this->getCmd());
 
         if(system(&vtos(this->getArgs())[0]) == 0) {
-            exit(EXIT_SUCCESS);
+            exit(0);
         }
         else{
-            exit(EXIT_FAILURE);
+            exit(-1);
         }
     }
         // Main process
