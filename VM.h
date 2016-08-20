@@ -8,7 +8,12 @@
 #include <string>
 #include <vector>
 #include <unistd.h>
+#include <fstream>
+#include <fcntl.h>
+#include <dirent.h>
 
+#define STDIN 0
+#define STDOUT 1
 #define NO_ERROR 0;
 #define ERROR -2;
 #define EXIT -1;

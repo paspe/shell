@@ -73,12 +73,8 @@ string VM::getOut(void)
 
 int VM::execute(void)
 {
-//    return fork_proc();
     if(this->cmd.compare("cd") == 0){
         chdir(this->getArgs()[0].c_str());
-    }
-    else if(this->cmd.compare("ls") == 0){
-
     }
     else if(this->cmd.compare("?") == 0){
         show_help();
@@ -94,19 +90,70 @@ int VM::fork_proc(){
     pid_t newPid;
     string args;
     newPid = fork();
+    int fh;
+    int fds[2];
+    fds[0] = dup(0);
+    fds[1] = dup(1);
+    fds[2] = dup(2);
+
+    //Check for redirection of stdout
 
     if(newPid < 0){
         cout << "Error spawning process." << endl;
         return -1;
     }
 
+    // Child Process
     if (newPid == 0){
 
-        args = vtos(this->args);
-        execlp("gnome-terminal", "gnome-terminal", "-x",  &this->cmd[0], args, NULL);
-//        execlp(&this->cmd[0],  &this->cmd[0], args, NULL);
+        // Do we have stdout redirection?
+        if(this->getOut().compare("screen") != 0){
 
+            // Open file to redirect to
+            fh = open(&this->getOut()[0], O_RDWR | O_CREAT, 0777);
+
+            if(fh < 0){
+                cout << "Error opening file..." << endl;
+                return -1;
+            }
+
+            // Redirect stdout
+            dup2(fh, 1);
+        }
+
+
+        if(this->getCmd().compare("ls") == 0){
+
+            DIR *dpdf;
+            struct dirent *epdf;
+            dpdf = opendir("./");
+            if (dpdf != NULL){
+                while (epdf = readdir(dpdf)){
+                    if(epdf->d_name == ".\0" or epdf->d_name == "..") continue;
+                    cout << epdf->d_name << endl;
+                }
+            }
+            execlp("echo", "echo", NULL);
+
+        }
+
+        else{
+            args = vtos(this->args);
+            execlp("gnome-terminal", "gnome-terminal", "-x", "sh", "-c", &this->cmd[0], args, NULL);
+        }
     }
+        // Main process
+    else{
+        // Wait for child to end
+        waitpid(newPid, NULL, 0);
+
+        // If we had redirection restore it
+        if(this->getOut().compare("screen") != 0) {
+            dup2(1, fh);
+            close(fh);
+        }
+    }
+
     return 0;
 }
 
