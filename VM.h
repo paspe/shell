@@ -11,6 +11,7 @@
 #include <fstream>
 #include <fcntl.h>
 #include <dirent.h>
+#include "encEdit.h"
 
 #define STDIN 0
 #define STDOUT 1
@@ -31,6 +32,7 @@ class VM {
         int fork_proc();
         string vtos(vector<string>);
         void show_help();
+        void enceditHelp();
     public:
         VM();
 

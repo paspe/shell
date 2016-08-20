@@ -85,24 +85,41 @@ int VM::execute(void)
 
 int VM::fork_proc(){
     pid_t newPid;
-//    string args;
-
-    int fh;
+    int fh, dummy;
     int fds[2];
     fds[0] = dup(0);
     fds[1] = dup(1);
     fds[2] = dup(2);
 
-    //Check for redirection of stdout
 
+    if(this->getCmd().compare("encedit") == 0){
+        if(this->getArgs().size() == 0){
+            enceditHelp();
+            return -1;
+        }
+
+        if(this->getArgs().size() > 2)
+            return -1;
+
+        encEdit* e = new encEdit(this->getArgs()[0].c_str(), this->getArgs()[1].c_str());
+        dummy = e->open();
+        if(dummy == 0){
+            dummy = e->close();
+        }
+        return 0;
+    }
+
+    // Fork new process
     newPid = fork();
     if(newPid < 0){
         cout << "Error spawning process." << endl;
         return -1;
     }
 
+
     // Child Process
     if (newPid == 0){
+
 
         // Do we have stdout redirection?
         if(this->getOut().compare("screen") != 0){
@@ -176,5 +193,15 @@ string VM::vtos(vector<string> s){
 void VM::show_help(){
     cout << "cd\t\tChange Directory." << endl;
     cout << "ls\t\tList contents of current Directory." << endl;
+    cout << "encedit\tOpen/create encrypted text file." << endl;
     cout << "any\t\tWill try to find an executable with that name and run it in a new window." << endl << endl;
+}
+
+
+void VM::enceditHelp() {
+    cout << "Error: No arguments passed." << endl;
+    cout << "Usage:" << endl;
+    cout << "\tencedit FILE_NAME PASSWORD" << endl;
+    cout << "\tFILE_NAME\tthe file to open. If it does not exist it creates it." << endl;
+    cout << "\tPASSWORD\tthe password used to encrypt/decrypt the file" << endl << endl;
 }
