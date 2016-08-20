@@ -12,7 +12,7 @@ using namespace std;
 VM::VM(){
     this->in = "keyboard";
     this->out = "screen";
-//    this->args = "";
+//    this->args.push_back(NULL);
 }
 
 
@@ -20,7 +20,6 @@ void VM::setCmd( string command )
 {
     cmd = command;
     return;
-
 }
 
 
@@ -35,7 +34,6 @@ void VM::setIn( string settingIn )
 {
     in = settingIn;
     return;
-
 }
 
 
@@ -43,7 +41,6 @@ void VM::setOut( string settingOut )
 {
     out = settingOut;
     return;
-
 }
 
 
@@ -88,8 +85,8 @@ int VM::execute(void)
 
 int VM::fork_proc(){
     pid_t newPid;
-    string args;
-    newPid = fork();
+//    string args;
+
     int fh;
     int fds[2];
     fds[0] = dup(0);
@@ -98,6 +95,7 @@ int VM::fork_proc(){
 
     //Check for redirection of stdout
 
+    newPid = fork();
     if(newPid < 0){
         cout << "Error spawning process." << endl;
         return -1;
@@ -110,7 +108,7 @@ int VM::fork_proc(){
         if(this->getOut().compare("screen") != 0){
 
             // Open file to redirect to
-            fh = open(&this->getOut()[0], O_RDWR | O_CREAT, 0777);
+            fh = open(&this->getOut()[0], O_RDWR | O_CREAT, 0666);
 
             if(fh < 0){
                 cout << "Error opening file..." << endl;
@@ -119,27 +117,29 @@ int VM::fork_proc(){
 
             // Redirect stdout
             dup2(fh, 1);
+            close(fh);
         }
 
+        if(this->getIn().compare("keyboard") != 0){
+            fh = open(&this->getIn()[0], O_RDONLY);
 
-        if(this->getCmd().compare("ls") == 0){
-
-            DIR *dpdf;
-            struct dirent *epdf;
-            dpdf = opendir("./");
-            if (dpdf != NULL){
-                while (epdf = readdir(dpdf)){
-                    if(epdf->d_name == ".\0" or epdf->d_name == "..") continue;
-                    cout << epdf->d_name << endl;
-                }
+            if(fh < 0){
+                cout << "Error opening file..." << endl;
+                return -1;
             }
-            execlp("echo", "echo", NULL);
 
+            // Redirect stdin
+            dup2(fh, 0);
+            close(fh);
         }
 
+        this->args.insert(this->args.begin(), this->getCmd());
+
+        if(system(&vtos(this->getArgs())[0]) == 0) {
+            exit(EXIT_SUCCESS);
+        }
         else{
-            args = vtos(this->args);
-            execlp("gnome-terminal", "gnome-terminal", "-x", "sh", "-c", &this->cmd[0], args, NULL);
+            exit(EXIT_FAILURE);
         }
     }
         // Main process
@@ -150,7 +150,9 @@ int VM::fork_proc(){
         // If we had redirection restore it
         if(this->getOut().compare("screen") != 0) {
             dup2(1, fh);
-            close(fh);
+        }
+        if(this->getIn().compare("keyboard") != 0) {
+            dup2(0, fh);
         }
     }
 
@@ -164,7 +166,7 @@ string VM::vtos(vector<string> s){
     int i;
 
     for(i=0; i<s.size();i++){
-        args = args + s[i];
+        args = args + " " + s[i];
     }
 
     return args;
