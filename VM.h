@@ -11,6 +11,7 @@
 #include <fstream>
 #include <fcntl.h>
 #include <dirent.h>
+#include <cstdlib>
 #include "encEdit.h"
 
 #define STDIN 0

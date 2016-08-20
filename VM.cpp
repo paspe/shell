@@ -193,7 +193,7 @@ string VM::vtos(vector<string> s){
 void VM::show_help(){
     cout << "cd\t\tChange Directory." << endl;
     cout << "ls\t\tList contents of current Directory." << endl;
-    cout << "encedit\tOpen/create encrypted text file." << endl;
+    cout << "encedit\t\tOpen/create encrypted text file." << endl;
     cout << "any\t\tWill try to find an executable with that name and run it in a new window." << endl << endl;
 }
 
