@@ -91,7 +91,8 @@ int VM::fork_proc(){
     fds[1] = dup(1);
     fds[2] = dup(2);
 
-
+    // Check for special command. We keep this function in the parent process and not spawn another
+    // to avoid IPC information leak
     if(this->getCmd().compare("encedit") == 0){
         if(this->getArgs().size() < 2){
             enceditHelp();
@@ -116,10 +117,8 @@ int VM::fork_proc(){
         return -1;
     }
 
-
     // Child Process
     if (newPid == 0){
-
 
         // Do we have stdout redirection?
         if(this->getOut().compare("screen") != 0){
@@ -137,6 +136,7 @@ int VM::fork_proc(){
             close(fh);
         }
 
+        // Do we have stdin redirection?
         if(this->getIn().compare("keyboard") != 0){
             fh = open(&this->getIn()[0], O_RDONLY);
 
@@ -150,8 +150,10 @@ int VM::fork_proc(){
             close(fh);
         }
 
-        this->args.insert(this->args.begin(), this->getCmd());
+        // Use this if we want to completely change new process code
+//        execlp("/usr/bin/xterm", "xterm", "-e", &vtos(this->getArgs())[0], NULL);
 
+        // Use this to invoke the shell to execute our command
         if(system(&vtos(this->getArgs())[0]) == 0) {
             exit(0);
         }
@@ -181,6 +183,14 @@ string VM::vtos(vector<string> s){
     string args = "";
 
     int i;
+
+    // Add command to list of arguments
+    if(this->getArgs().size() == 0){
+        this->setArgs(this->getCmd());
+    }
+    else{
+        this->args.insert(this->args.begin(), this->getCmd());
+    }
 
     for(i=0; i<s.size();i++){
         args = args + " " + s[i];

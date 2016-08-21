@@ -41,9 +41,11 @@ int encEdit::open() {
 int encEdit::close() {
     string cmd;
 
-    cmd = "openssl enc -aes-256-ofb -e -in " + this->tmpfile;
-    cmd = cmd + " -out " + this->file + " -K " + this->password + " -iv ff";
-    system(&cmd[0]);
+    if(this->checkFileExists(this->tmpfile)) {
+        cmd = "openssl enc -aes-256-ofb -e -in " + this->tmpfile;
+        cmd = cmd + " -out " + this->file + " -K " + this->password + " -iv ff";
+        system(&cmd[0]);
+    }
     if(this->checkFileExists(this->tmpfile)) {
         remove(&this->tmpfile[0]);
     }
