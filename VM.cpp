@@ -93,7 +93,7 @@ int VM::fork_proc(){
 
 
     if(this->getCmd().compare("encedit") == 0){
-        if(this->getArgs().size() == 0){
+        if(this->getArgs().size() < 2){
             enceditHelp();
             return -1;
         }
