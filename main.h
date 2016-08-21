@@ -24,7 +24,6 @@
 #define STDOUT 1
 #define NO_ERROR 0
 #define ERROR -1
-#define GetCurrentDir getcwd
 #define MAXBUFFER 256
 
 using namespace std;

@@ -39,7 +39,7 @@ int main() {
 string getDir(){
     char cCurrentPath[FILENAME_MAX];
 
-    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
+    if (!getcwd(cCurrentPath, sizeof(cCurrentPath)))
     {
         return "Error getting working directory...";
     }
