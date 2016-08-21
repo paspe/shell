@@ -1,12 +1,10 @@
-//
-// Created by halek on 8/2/16.
-//
+// Created by Glasser Dillon, Mauldin Andrew, Peppas Alexis
+// for CS3070 course project
 
 #ifndef SHELL_TOKENIZER_H
 #define SHELL_TOKENIZER_H
 
-#include <string>
-#include <iostream>
+#include "main.h"
 
 using namespace std;
 

@@ -1,4 +1,8 @@
+// Created by Glasser Dillon, Mauldin Andrew, Peppas Alexis
+// for CS3070 course project
+
 #include "parser.h"
+
 using namespace std;
 
 /*

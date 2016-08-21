@@ -1,14 +1,10 @@
-//
-// Created by halek on 8/20/16.
-//
+// Created by Glasser Dillon, Mauldin Andrew, Peppas Alexis
+// for CS3070 course project
 
 #ifndef SHELL_ENCEDIT_H
 #define SHELL_ENCEDIT_H
 
-#include <string>
-#include <iostream>
-#include <cstdlib>
-#include <stdio.h>
+#include "main.h"
 
 using namespace std;
 
@@ -19,8 +15,6 @@ private:
     string tmpfile;
 
     char* text;
-//    void encrypt();
-//    void decrypt();
     bool checkFileExists(string);
 
 public:

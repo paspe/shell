@@ -1,5 +1,7 @@
+// Created by Glasser Dillon, Mauldin Andrew, Peppas Alexis
+// for CS3070 course project
+
 #include "Tokenizer.h"
-#include "parser.h"
 
 Tokenizer::Tokenizer() {
     line = "";

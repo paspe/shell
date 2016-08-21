@@ -1,6 +1,5 @@
-//
-// Created by halek on 8/20/16.
-//
+// Created by Glasser Dillon, Mauldin Andrew, Peppas Alexis
+// for CS3070 course project
 
 #include "encEdit.h"
 
@@ -34,7 +33,7 @@ int encEdit::open() {
         cmd = "gedit " + this->tmpfile;
         system(&cmd[0]);
     }
-    return 0;
+    return NO_ERROR;
 }
 
 
@@ -49,5 +48,5 @@ int encEdit::close() {
     if(this->checkFileExists(this->tmpfile)) {
         remove(&this->tmpfile[0]);
     }
-    return 0;
+    return NO_ERROR;
 }

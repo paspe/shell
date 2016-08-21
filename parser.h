@@ -1,18 +1,10 @@
+// Created by Glasser Dillon, Mauldin Andrew, Peppas Alexis
+// for CS3070 course project
+
 #ifndef SHELL_PARSER_H
 #define SHELL_PARSER_H
 
-#include <string>
-#include <unistd.h>
-#include <iostream>
-#include <fstream>
-#include <sys/stat.h>
-#include <cerrno>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <cstdlib>
-#include <vector>
-
+#include "main.h"
 #include "Tokenizer.h"
 #include "VM.h"
 

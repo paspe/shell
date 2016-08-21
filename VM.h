@@ -1,27 +1,13 @@
-//
-// Created by Dillon
-//
+// Created by Glasser Dillon, Mauldin Andrew, Peppas Alexis
+// for CS3070 course project
 
 #ifndef VM_H_VM_H
 #define VM_H_VM_H
-#include <iostream>
-#include <string>
-#include <vector>
-#include <unistd.h>
-#include <fstream>
-#include <fcntl.h>
-#include <dirent.h>
-#include <cstdlib>
-#include "encEdit.h"
 
-#define STDIN 0
-#define STDOUT 1
-#define NO_ERROR 0;
-#define ERROR -2;
-#define EXIT -1;
+#include "encEdit.h"
+#include "main.h"
 
 using namespace std;
-
 
 class VM {
 
@@ -31,7 +17,7 @@ class VM {
         string in;
         string out;
         int fork_proc();
-        string vtos(vector<string>);
+        string vtos();
         void show_help();
         void enceditHelp();
     public:

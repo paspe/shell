@@ -1,6 +1,5 @@
-//
-// Created by Dillon
-//
+// Created by Glasser Dillon, Mauldin Andrew, Peppas Alexis
+// for CS3070 course project
 
 #include <cstring>
 #include <wait.h>
@@ -96,25 +95,25 @@ int VM::fork_proc(){
     if(this->getCmd().compare("encedit") == 0){
         if(this->getArgs().size() < 2){
             enceditHelp();
-            return -1;
+            return ERROR;
         }
 
         if(this->getArgs().size() > 2)
-            return -1;
+            return ERROR;
 
         encEdit* e = new encEdit(this->getArgs()[0].c_str(), this->getArgs()[1].c_str());
         dummy = e->open();
         if(dummy == 0){
             dummy = e->close();
         }
-        return 0;
+        return NO_ERROR;
     }
 
     // Fork new process
     newPid = fork();
     if(newPid < 0){
         cout << "Error spawning process." << endl;
-        return -1;
+        return ERROR;
     }
 
     // Child Process
@@ -128,11 +127,11 @@ int VM::fork_proc(){
 
             if(fh < 0){
                 cout << "Error opening file..." << endl;
-                return -1;
+                return ERROR;
             }
 
             // Redirect stdout
-            dup2(fh, 1);
+            dup2(fh, STDOUT);
             close(fh);
         }
 
@@ -142,23 +141,23 @@ int VM::fork_proc(){
 
             if(fh < 0){
                 cout << "Error opening file..." << endl;
-                return -1;
+                return ERROR;
             }
 
             // Redirect stdin
-            dup2(fh, 0);
+            dup2(fh, STDIN);
             close(fh);
         }
 
         // Use this if we want to completely change new process code
-//        execlp("/usr/bin/xterm", "xterm", "-e", &vtos(this->getArgs())[0], NULL);
+        // execlp("/usr/bin/xterm", "xterm", "-e", &vtos()[0], NULL);
 
         // Use this to invoke the shell to execute our command
-        if(system(&vtos(this->getArgs())[0]) == 0) {
-            exit(0);
+        if(system(&vtos()[0]) == 0) {
+            exit(NO_ERROR);
         }
         else{
-            exit(-1);
+            exit(ERROR);
         }
     }
         // Main process
@@ -168,18 +167,18 @@ int VM::fork_proc(){
 
         // If we had redirection restore it
         if(this->getOut().compare("screen") != 0) {
-            dup2(1, fh);
+            dup2(STDOUT, fh);
         }
         if(this->getIn().compare("keyboard") != 0) {
-            dup2(0, fh);
+            dup2(STDIN, fh);
         }
     }
 
-    return 0;
+    return NO_ERROR;
 }
 
 
-string VM::vtos(vector<string> s){
+string VM::vtos(){
     string args = "";
 
     int i;
@@ -192,8 +191,8 @@ string VM::vtos(vector<string> s){
         this->args.insert(this->args.begin(), this->getCmd());
     }
 
-    for(i=0; i<s.size();i++){
-        args = args + " " + s[i];
+    for(i=0; i<this->getArgs().size();i++){
+        args = args + " " + this->getArgs()[i];
     }
 
     return args;

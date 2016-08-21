@@ -1,9 +1,7 @@
-#include <iostream>
-#include "parser.h"
-#include "VM.h"
+// Created by Glasser Dillon, Mauldin Andrew, Peppas Alexis
+// for CS3070 course project
 
-#define GetCurrentDir getcwd
-#define MAXBUFFER 256
+#include "main.h"
 
 using namespace std;
 
@@ -17,8 +15,6 @@ using namespace std;
 //	return 0;
 //}
 
-
-string getDir();
 
 int main() {
     string userInput;
