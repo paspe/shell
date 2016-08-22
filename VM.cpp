@@ -191,6 +191,7 @@ int VM::fork_proc(){
         //TODO: option to wait or not
         waitpid(newPid, NULL, 0);
 
+
         // If we had redirection restore it
         if(this->getOut().compare("screen") != 0) {
             dup2(STDOUT, fh);
@@ -214,6 +215,7 @@ string VM::vtos(){
     args = args + this->getCmd();
 
     for(i=0; i<this->getArgs().size();i++){
+        if(this->getArgs()[i].compare("&") == 0) continue;
         args = args + " " + this->getArgs()[i];
     }
 
