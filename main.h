@@ -17,6 +17,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdio.h>
+#include <csignal>
 
 #include "parser.h"
 
@@ -24,7 +25,7 @@
 #define STDOUT 1
 #define NO_ERROR 0
 #define ERROR -1
-#define MAXBUFFER 256
+#define PIPE_FILE ".pipefile.txt"
 
 using namespace std;
 
