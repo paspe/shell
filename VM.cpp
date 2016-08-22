@@ -208,8 +208,7 @@ void VM::show_help(){
 
 
 void VM::enceditHelp() {
-    cout << "Usage:" << endl;
-    cout << "\tencedit FILE_NAME PASSWORD" << endl;
+    cout << "Usage:\tencedit FILE_NAME PASSWORD" << endl;
     cout << "\tFILE_NAME\tthe file to open. If it does not exist it creates it." << endl;
     cout << "\tPASSWORD\tthe password used to encrypt/decrypt the file" << endl << endl;
 }

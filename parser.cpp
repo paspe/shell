@@ -104,12 +104,12 @@ int parseLine(string line){
 		vm->setCmd(cmd);
 		vm->setIn(input);
 		vm->setOut(output);
-		cout << cmd << "\t ";
-		for(int i = 0; i < numArgs; i++){
-			cout << args[i] << ' ';
-			vm->setArgs(args[i]);
-		}
-		cout << "\t " << input << "\t " << output << "\n";
+//		cout << cmd << "\t ";
+//		for(int i = 0; i < numArgs; i++){
+//			cout << args[i] << ' ';
+//			vm->setArgs(args[i]);
+//		}
+//		cout << "\t " << input << "\t " << output << "\n";
 		vm->execute();
 
 		numArgs = 0;
