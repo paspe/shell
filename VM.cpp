@@ -87,12 +87,8 @@ int VM::execute(void)
 int VM::fork_proc(){
     pid_t newPid;
     int fh, dummy;
-//    int fds[2];
     char** args;
     args = new char*[this->getArgs().size()+2];
-//    fds[0] = dup(0);
-//    fds[1] = dup(1);
-//    fds[2] = dup(2);
 
     // Check for special command. We keep this function in the parent process and not spawn another
     // to avoid IPC information leak
@@ -183,15 +179,18 @@ int VM::fork_proc(){
 //TODO: add check for run command and execute different exec
 //         execlp("/usr/bin/xterm", "xterm", "-e", &vtos()[0], NULL);
 
+        // Convert Command and Arguments to char** to pass to execvp
         args[0] = (char*)this->getCmd().c_str();
 
         for(int q = 0;q < this->getArgs().size();q++){
             args[q+1] = (char*)this->getArgs()[q].c_str();
         }
 
-
+        // Change executable code of the child process
         execvp(args[0], args);
 
+        // If we reached here, there was an error so kill the process
+        cout << "There was an error launching the program. Killing the process..." << endl;
         kill(getpid(), SIGKILL);
 
     }
