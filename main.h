@@ -25,7 +25,7 @@
 #define STDOUT 1
 #define NO_ERROR 0
 #define ERROR -1
-#define PIPE_FILE ".pipefile.txt"
+#define PIPE_FILE "/tmp/pipefile.txt"
 
 using namespace std;
 

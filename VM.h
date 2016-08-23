@@ -21,6 +21,7 @@ class VM {
         void enceditHelp();
     public:
         VM();
+        ~VM(){};
 
         //setters
         void setCmd(string);

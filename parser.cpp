@@ -43,9 +43,11 @@ int parseLine(string line){
 	string input;
 	string output;
 
-	VM* vm = new VM();
+
 
 	while (token->hasMoreTokens()) {
+
+        VM* vm = new VM();
 
 		// Case that the previous command was pipe
 		if (pipe){
@@ -111,11 +113,11 @@ int parseLine(string line){
 		}
 //		cout << "\t " << input << "\t " << output << "\n";
 		vm->execute();
-
+        delete vm;
 		numArgs = 0;
 
 	}
-	delete vm;
+//	delete vm;
 	delete token;
 	return 0;
 }
