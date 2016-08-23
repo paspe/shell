@@ -87,8 +87,9 @@ int VM::execute(void)
 int VM::fork_proc(){
     pid_t newPid;
     int fh, dummy;
-    int fds[2];
+//    int fds[2];
     char** args;
+    args = new char*[this->getArgs().size()+2];
 //    fds[0] = dup(0);
 //    fds[1] = dup(1);
 //    fds[2] = dup(2);
@@ -181,8 +182,6 @@ int VM::fork_proc(){
 
 //TODO: add check for run command and execute different exec
 //         execlp("/usr/bin/xterm", "xterm", "-e", &vtos()[0], NULL);
-
-        args = new char*[this->getArgs().size()+2];
 
         args[0] = (char*)this->getCmd().c_str();
 
