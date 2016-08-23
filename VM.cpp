@@ -88,6 +88,7 @@ int VM::fork_proc(){
     pid_t newPid;
     int fh, dummy;
     int fds[2];
+    char** args;
 //    fds[0] = dup(0);
 //    fds[1] = dup(1);
 //    fds[2] = dup(2);
@@ -114,6 +115,7 @@ int VM::fork_proc(){
         }
         return NO_ERROR;
     }
+
 
     // Fork new process
     newPid = fork();
@@ -180,7 +182,16 @@ int VM::fork_proc(){
 //TODO: add check for run command and execute different exec
 //         execlp("/usr/bin/xterm", "xterm", "-e", &vtos()[0], NULL);
 
-        execlp(&this->getCmd()[0], &vtos()[0], (char *)0);
+        args = new char*[this->getArgs().size()+2];
+
+        args[0] = (char*)this->getCmd().c_str();
+
+        for(int q = 0;q < this->getArgs().size();q++){
+            args[q+1] = (char*)this->getArgs()[q].c_str();
+        }
+
+
+        execvp(args[0], args);
 
         kill(getpid(), SIGKILL);
 
@@ -203,23 +214,6 @@ int VM::fork_proc(){
     }
 
     return NO_ERROR;
-}
-
-
-string VM::vtos(){
-    string args = "";
-
-    int i;
-
-    // Add command to list of arguments
-    args = args + this->getCmd();
-
-    for(i=0; i<this->getArgs().size();i++){
-        if(this->getArgs()[i].compare("&") == 0) continue;
-        args = args + " " + this->getArgs()[i];
-    }
-
-    return args + '\0';
 }
 
 

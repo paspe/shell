@@ -17,7 +17,6 @@ class VM {
         string in;
         string out;
         int fork_proc();
-        string vtos();
         void show_help();
         void enceditHelp();
     public:
