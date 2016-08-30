@@ -91,7 +91,7 @@ int VM::execute(int val)
 
 int VM::fork_proc(int val){
     pid_t newPid;
-    int fh, dummy;
+    int fh, fh1, dummy;
     char** args;
     args = new char*[this->getArgs().size()+2];
 
@@ -149,7 +149,7 @@ int VM::fork_proc(int val){
                 cout << "Error opening file..." << endl;
                 return ERROR;
             }
-
+            ftruncate(fh, 0);
             // Redirect stdout
             dup2(fh, STDOUT);
             close(fh);
@@ -172,16 +172,16 @@ int VM::fork_proc(int val){
             }
 
             // Open file to redirect from
-            fh = open(&this->getIn()[0], O_RDONLY, 0777);
+            fh1 = open(&this->getIn()[0], O_RDONLY, 0777);
 
-            if(fh < 0){
+            if(fh1 < 0){
                 cout << "Error opening file..." << endl;
                 return ERROR;
             }
 
             // Redirect stdin
-            dup2(fh, STDIN);
-            close(fh);
+            dup2(fh1, STDIN);
+            close(fh1);
         }
 
 
@@ -197,6 +197,9 @@ int VM::fork_proc(int val){
         execvp(args[0], args);
 
         // If we reached here, there was an error so return error number
+        if(this->getOut().compare("screen") != 0){
+            dup2(STDOUT, fh);
+        }
         cout << "There was an error launching the program. Error: " << errno << endl;
         kill(getpid(), SIGKILL);
 
