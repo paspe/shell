@@ -18,6 +18,7 @@
 #include <sys/wait.h>
 #include <stdio.h>
 #include <csignal>
+#include <errno.h>
 
 #include "parser.h"
 
@@ -25,7 +26,7 @@
 #define STDOUT 1
 #define NO_ERROR 0
 #define ERROR -1
-#define PIPE_FILE "/tmp/pipefile.txt"
+
 
 using namespace std;
 

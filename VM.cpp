@@ -42,6 +42,11 @@ void VM::setOut( string settingOut )
 }
 
 
+void VM::setVal(int v){
+    val = v;
+    return;
+}
+
 string VM::getCmd(void)
 {
     return cmd;
@@ -66,7 +71,7 @@ string VM::getOut(void)
 }
 
 
-int VM::execute(void)
+int VM::execute(int val)
 {
     if(this->cmd.compare("cd") == 0){
         chdir(this->getArgs()[0].c_str());
@@ -78,17 +83,23 @@ int VM::execute(void)
         cout << "Current process ID: " << getpid() << endl;
     }
     else{
-        return fork_proc();
+        return fork_proc(val);
     }
     return NO_ERROR;
 }
 
 
-int VM::fork_proc(){
+int VM::fork_proc(int val){
     pid_t newPid;
     int fh, dummy;
     char** args;
     args = new char*[this->getArgs().size()+2];
+
+    // Create the two possible pipefiles
+    string pipefile = "/tmp/pipefile";
+    pipefile.push_back((char)val);
+    string prev_pipefile = "/tmp/pipefile";
+    prev_pipefile.push_back((char)(val-1));
 
     // Check for special command. We keep this function in the parent process and not spawn another
     // to avoid IPC information leak
@@ -113,7 +124,6 @@ int VM::fork_proc(){
         return NO_ERROR;
     }
 
-
     // Fork new process
     newPid = fork();
     if(newPid < 0){
@@ -129,12 +139,11 @@ int VM::fork_proc(){
 
             // Do we have pipe?
             if(this->getOut().compare("out_pipe") == 0){
-                cout << PIPE_FILE;
-                this->setOut(PIPE_FILE);
+                this->setOut(pipefile);
             }
 
             // Open file to redirect to
-            fh = open(&this->getOut()[0], O_RDWR | O_CREAT, 0666);
+            fh = open(&this->getOut()[0], O_RDWR | O_CREAT, 0777);
 
             if(fh < 0){
                 cout << "Error opening file..." << endl;
@@ -151,7 +160,7 @@ int VM::fork_proc(){
 
             // Do we have pipe?
             if(this->getIn().compare("in_pipe") == 0){
-                this->setIn(PIPE_FILE);
+                this->setIn(prev_pipefile);
             }
 
             // Check file exists
@@ -163,7 +172,7 @@ int VM::fork_proc(){
             }
 
             // Open file to redirect from
-            fh = open(&this->getIn()[0], O_RDONLY);
+            fh = open(&this->getIn()[0], O_RDONLY, 0777);
 
             if(fh < 0){
                 cout << "Error opening file..." << endl;
@@ -176,21 +185,19 @@ int VM::fork_proc(){
         }
 
 
-//TODO: add check for run command and execute different exec
-//         execlp("/usr/bin/xterm", "xterm", "-e", &vtos()[0], NULL);
-
         // Convert Command and Arguments to char** to pass to execvp
         args[0] = (char*)this->getCmd().c_str();
 
         for(int q = 0;q < this->getArgs().size();q++){
             args[q+1] = (char*)this->getArgs()[q].c_str();
         }
+        args[this->getArgs().size() + 1] = NULL;    // Add NULL pointer at the end of the args array
 
         // Change executable code of the child process
         execvp(args[0], args);
 
-        // If we reached here, there was an error so kill the process
-        cout << "There was an error launching the program. Killing the process..." << endl;
+        // If we reached here, there was an error so return error number
+        cout << "There was an error launching the program. Error: " << errno << endl;
         kill(getpid(), SIGKILL);
 
     }
@@ -200,15 +207,6 @@ int VM::fork_proc(){
         //TODO: option to wait or not
         waitpid(newPid, NULL, 0);
 
-
-        // If we had redirection restore it
-        if(this->getOut().compare("screen") != 0) {
-            dup2(STDOUT, fh);
-        }
-        if(this->getIn().compare("keyboard") != 0) {
-            dup2(STDIN, fh);
-            remove(PIPE_FILE);
-        }
     }
 
     return NO_ERROR;

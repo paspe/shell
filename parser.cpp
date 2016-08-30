@@ -42,7 +42,7 @@ int parseLine(string line){
 	string* args = NULL;
 	string input;
 	string output;
-
+	int val= 48;
 
 
 	while (token->hasMoreTokens()) {
@@ -57,7 +57,6 @@ int parseLine(string line){
 			input = "keyboard";
 		}
 		token->consumeNextToken();
-		// cout << "In the parser" << endl;
 		// Command
 		cmd = token->currentToken();
 		token->consumeNextToken();
@@ -83,7 +82,6 @@ int parseLine(string line){
 		// Pipe or Output Redirection.
 		// Pipe here
 		if (token->currentToken().compare("|") == 0){
-			//token->consumeNextToken();
 			output = "out_pipe";
 			pipe = true;
 		}
@@ -97,27 +95,25 @@ int parseLine(string line){
 			output = "screen";
 		}
 
-        if(cmd.compare("exit") ==0){
+        if(cmd.compare("exit") == 0){
             return -1;
         }
-		// Execute VM here
 
+		// Execute VM here
 
 		vm->setCmd(cmd);
 		vm->setIn(input);
 		vm->setOut(output);
-//		cout << cmd << "\t ";
+		vm->setVal((int)val);
 		for(int i = 0; i < numArgs; i++){
-//			cout << args[i] << ' ';
 			vm->setArgs(args[i]);
 		}
-//		cout << "\t " << input << "\t " << output << "\n";
-		vm->execute();
+		if(vm->execute(val) != NO_ERROR)
+			cout << "There was an error running this command." << endl;
         delete vm;
 		numArgs = 0;
-
+		val++;
 	}
-//	delete vm;
 	delete token;
 	return 0;
 }

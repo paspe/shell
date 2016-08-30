@@ -16,7 +16,8 @@ class VM {
         vector<string> args;
         string in;
         string out;
-        int fork_proc();
+        int val;
+        int fork_proc(int);
         void show_help();
         void enceditHelp();
     public:
@@ -28,6 +29,7 @@ class VM {
         void setArgs(string);
         void setIn(string);
         void setOut(string);
+        void setVal(int);
 
         //getters
         string getCmd();
@@ -35,7 +37,7 @@ class VM {
         string getIn();
         string getOut();
 
-        int execute();
+        int execute(int);
 
 };
 
